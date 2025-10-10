@@ -6,7 +6,8 @@ import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 
-
+import androidx.compose.runtime.*
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AdaptativeScreen()
+                    FormularioApp()
                 }
             }
         }
@@ -39,26 +40,59 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun AdaptativeScreen() {
-    // Centrado vertical y horizontal
+fun FormularioApp() {
+    var nombre by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Título que respeta accesibilidad (Dynamic Text Scaling)
-        Text(
-            text = "Bienvenido a mi App",
-            style = MaterialTheme.typography.headlineMedium
+        Text(text = "Registro de usuario", style = MaterialTheme.typography.headlineMedium)
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        TextField(
+            value = nombre,
+            onValueChange = { nombre = it },
+            label = { Text("Nombre completo") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TextField(
+            value = correo,
+            onValueChange = { correo = it },
+            label = { Text("Correo electrónico") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Contraseña") },
+            visualTransformation = PasswordVisualTransformation(),
+            modifier = Modifier.fillMaxWidth()
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Botón
-        Button(onClick = { /* acción del botón */ }) {
-            Text(text = "Haz clic aquí")
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Button(onClick = { /* Acción de guardar */ }) {
+                Text("Guardar")
+            }
+            Button(onClick = { /* Acción de cancelar */ }) {
+                Text("Cancelar")
+            }
         }
     }
 }
