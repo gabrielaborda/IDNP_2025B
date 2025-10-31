@@ -4,9 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,15 +16,30 @@ import coil.compose.rememberAsyncImagePainter
 import com.borda.idnp_florasmart.data.PlantData
 import com.borda.idnp_florasmart.model.Plant
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlantListScreen(modifier: Modifier = Modifier) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp, vertical = 8.dp)
-    ) {
-        items(PlantData.plantList) { plant ->
-            PlantCard(plant)
+fun PlantListScreen(onNavigateToSettings: () -> Unit) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("🌿 FloraSmart - Lista de Plantas") },
+                actions = {
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(Icons.Default.Settings, contentDescription = "Configuración")
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(horizontal = 8.dp, vertical = 8.dp)
+        ) {
+            items(PlantData.plantList) { plant ->
+                PlantCard(plant)
+            }
         }
     }
 }
