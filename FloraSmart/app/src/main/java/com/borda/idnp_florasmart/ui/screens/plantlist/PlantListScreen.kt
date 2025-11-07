@@ -18,7 +18,10 @@ import com.borda.idnp_florasmart.model.Plant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlantListScreen(onNavigateToSettings: () -> Unit) {
+fun PlantListScreen(
+    onNavigateToSettings: () -> Unit = {},
+    onNavigateToUserPlants: () -> Unit = {} // ✅ nuevo parámetro
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -31,14 +34,29 @@ fun PlantListScreen(onNavigateToSettings: () -> Unit) {
             )
         }
     ) { innerPadding ->
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 8.dp, vertical = 8.dp)
         ) {
-            items(PlantData.plantList) { plant ->
-                PlantCard(plant)
+            LazyColumn(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                items(PlantData.plantList) { plant ->
+                    PlantCard(plant)
+                }
+            }
+
+            // ✅ Botón para navegar a la pantalla de registro de plantas
+            Button(
+                onClick = onNavigateToUserPlants,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Text("🌱 Ir a Mi Huerto")
             }
         }
     }
